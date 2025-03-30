@@ -24,7 +24,7 @@ userRouter.post('/signup', async(req, res)=>{
     const userPayload = req.body;
     const parsed = signupPayload.safeParse(userPayload);
     if(!parsed.success){
-        return res.send(parsed.error.errors).status(411);
+        return res.status(400).send(parsed.error.errors);
     }
 
     const existingUser = await USERS.findOne({
@@ -32,7 +32,7 @@ userRouter.post('/signup', async(req, res)=>{
     })
 
     if(existingUser){
-        return res.json({
+        return res.status(409).json({
             message: "userNameEmail already exist"
         })
     }
@@ -83,7 +83,7 @@ userRouter.post('/signin', async (req, res)=>{
     const existingUser = await USERS.findOne({userName: userName, password: password});
 
     if(!existingUser){
-        return res.status(401).json({
+        return res.status(400).json({
             message: "Wrong username or password"
         });
     }
@@ -107,7 +107,7 @@ userRouter.put('/put',authMiddleware, async(req, res)=>{
     const updateBodypayload = req.body;
     const parsed = updateUserPayload.safeParse(updateBodypayload);
     if(!parsed.success){
-        res.status(411).json({
+        res.status(400).json({
             msg : "invalid inputs"
         })
     }
