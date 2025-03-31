@@ -103,7 +103,7 @@ const updateUserPayload = zod.object({
     lastName: zod.string().optional(),
     password: zod.string().optional()
 })
-userRouter.put('/put',authMiddleware, async(req, res)=>{
+userRouter.put('/update',authMiddleware, async(req, res)=>{
     const updateBodypayload = req.body;
     const parsed = updateUserPayload.safeParse(updateBodypayload);
     if(!parsed.success){
